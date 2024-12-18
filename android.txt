@@ -1,0 +1,612 @@
+1)Program to Check the given number in the Edit Text, is prime or not.
+    MainActivity.kt
+    ----------------
+    package com.example.primechecker
+    import android.os.Bundle
+    import android.view.View
+    import android.widget.Button
+    import android.widget.EditText
+    import android.widget.TextView
+    import androidx.appcompat.app.AppCompatActivity
+    class MainActivity : AppCompatActivity() {
+    private lateinit var numberInputEditText: EditText
+    private lateinit var resultTextView: TextView
+    private lateinit var checkPrimeButton: Button
+    override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_main)
+    // Initialize UI elements
+    numberInputEditText = findViewById(R.id.number_input)
+    resultTextView = findViewById(R.id.result)
+    checkPrimeButton = findViewById(R.id.check_prime_button)
+    // Set up button click listener
+    checkPrimeButton.setOnClickListener {
+    // Get the number from EditText and convert to integer
+    val number = numberInputEditText.text.toString().toIntOrNull() ?: 0
+    // Check if the number is prime
+    val isPrime = isPrime(number)
+    // Update the result TextView
+    if (isPrime) {
+    resultTextView.text = "$number is a prime number."
+    } else {
+    resultTextView.text = "$number is not a prime number."
+    }
+    resultTextView.visibility = View.VISIBLE
+    }
+    }
+    // Function to check if a number is prime
+    private fun isPrime(number: Int): Boolean {
+    if (number < 2) return false
+    for (i in 2..Math.sqrt(number.toDouble()).toInt()) {
+    if (number % i == 0) return false
+    }
+    return true
+    }
+    }
+2)Program to demonstrate Toast.
+    button.setOnClickListener {
+    val toast= Toast.makeText(this,"Button clicked!",Toast.LENGTH_LONG)
+    toast.setGravity(Gravity.START,100,100)
+    toast.show()
+    }
+3)Program to Load an Image in ImageView
+    val imgV = findViewById<ImageView>(R.id.imageView)
+    imgV.setImageResource(R.drawable.ic_launcher_background)
+4)Program to move an Image from one ImageView to another ImageView
+on button press.
+    val imgV = findViewById<ImageView>(R.id.imageView)
+    val button1 = findViewById<Button>(R.id.button)
+    button1.setOnClickListener {
+    if (flag) {
+    imgV.setImageResource(R.drawable.imp1) // Changing image to imp1
+    flag = false
+    } else {
+    imgV.setImageResource(R.drawable.imp) // Changing image to imp
+    flag = true
+    }
+    }
+5)Create a simple list view to list our former presidents
+    val lstview = findViewById<ListView>(R.id.listV)
+    val name = arrayOf("Dr. Rajendra Prasad", "Dr. Sarvepalli Radhakrishnan",
+    "Dr. Zakir Hussain", "V. V. Giri", "Fakhruddin Ali Ahmed", "Neelam Sanjiva
+    Reddy", "Giani Zail Singh", "R. Venkataraman", "Dr. Shankar Dayal Sharma",
+    "K. R. Narayanan", "Dr. A.P.J. Abdul Kalam", "Pratibha Patil", "Pranab
+    Mukherjee", "Ram Nath Kovind", "Droupadi Murmu")
+    val arrayAdapter: ArrayAdapter<String> = ArrayAdapter(this,
+    android.R.layout.simple_list_item_1, name)
+    lstview.adapter = arrayAdapter
+    lstview.onItemClickListener = AdapterView.OnItemClickListener {
+    adapterView, view, position, id ->
+    Toast.makeText(this, "Item selected: " + name[position],
+    Toast.LENGTH_LONG).show()
+    }
+ 6)Create a Custom List view that contains list of students with their name,
+place and photo.
+    custom_list.xml
+    ----------------
+    <?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp">
+    <ImageView
+    android:id="@+id/icon"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    android:src="@mipmap/ic_launcher"/>
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:orientation="vertical">
+    <TextView
+    android:id="@+id/title"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Title"
+    android:textStyle="bold"
+    android:textSize="18sp"/>
+    <TextView
+    android:id="@+id/description"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Description"
+    android:textSize="16sp"/>
+    </LinearLayout>
+    </LinearLayout>
+    activity_main.xml
+    ------------------
+    <?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ListView
+    android:id="@+id/listView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
+    </RelativeLayout>
+    MainActivity.kt
+    ----------------
+    package com.example.studentcustomlist
+    import android.os.Bundle
+    import android.widget.ListView
+    import android.widget.Toast
+    import androidx.appcompat.app.AppCompatActivity
+    class MainActivity : AppCompatActivity() {
+    // Array for student names
+    private val names = arrayOf(
+    "Ali", "Bob", "Don", "Elizabeth", "Susan"
+    )
+    // Array for places
+    private val places = arrayOf(
+    "Kanjirappally", "Ponkunnam", "Erumeli", "Adoor", "Kochi"
+    )
+    // Array for student images
+    private val imageId = arrayOf(
+    R.drawable.ali, R.drawable.bob, R.drawable.don, R.drawable.elizabeth,
+    R.drawable.susan
+    )
+    override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_main)
+    val listView = findViewById<ListView>(R.id.listView)
+    // Create adapter with updated data
+    val myListAdapter = MyListAdapter(this, names, places, imageId)
+    listView.adapter = myListAdapter
+    // Set item click listener to show a Toast message with student details
+    listView.setOnItemClickListener { _, _, position, _ ->
+    val selectedName = names[position]
+    val selectedPlace = places[position]
+    Toast.makeText(
+    this, "Clicked on $selectedName from $selectedPlace at position
+    $position", Toast.LENGTH_LONG
+    ).show()
+    }
+    }
+    }
+    MyListAdapter.kt
+    ----------------
+    package com.example.studentcustomlist
+    import android.app.Activity
+    import android.view.LayoutInflater
+    import android.view.View
+    import android.view.ViewGroup
+    import android.widget.ArrayAdapter
+    import android.widget.ImageView
+    import android.widget.TextView
+    class MyListAdapter(
+    private val context: Activity,
+    private val title: Array<String>,
+    private val description: Array<String>,
+    private val imgid: Array<Int>
+    ) : ArrayAdapter<String>(context, R.layout.custom_list, title) {
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup):
+    View {
+    val inflater = context.layoutInflater
+    val rowView = convertView ?: inflater.inflate(R.layout.custom_list, parent,
+    false)
+    val titleText = rowView.findViewById<TextView>(R.id.title)
+    val imageView = rowView.findViewById<ImageView>(R.id.icon)
+    val subtitleText = rowView.findViewById<TextView>(R.id.description)
+    titleText.text = title[position]
+    imageView.setImageResource(imgid[position])
+    subtitleText.text = description[position]
+    return rowView
+    }
+    }
+7)Create an application to make calls to your friends contact number.
+    AndroidManifest.xml
+    -------------------
+    <uses-feature
+    android:name="android.hardware.telephony"
+    android:required="false" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    MainActivity.kt
+    ---------------
+    package com.example.callintent
+    import android.Manifest
+    import android.content.Intent
+    import android.content.pm.PackageManager
+    import android.net.Uri
+    import android.os.Bundle
+    import android.view.View
+    import android.widget.EditText
+    import android.widget.Toast
+    import androidx.appcompat.app.AppCompatActivity
+    import androidx.core.app.ActivityCompat
+    import androidx.core.content.ContextCompat
+    class MainActivity : AppCompatActivity() {
+        private val CALL_PHONE_PERMISSION = 1
+    override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_main)
+    // Set up the call button listener
+    val callButton = findViewById<View>(R.id.callButton)
+    callButton.setOnClickListener {
+    val phoneNumberEditText =
+    findViewById<EditText>(R.id.phoneNumberEditText)
+    val phoneNumber = phoneNumberEditText.text.toString()
+    if (phoneNumber.isNotEmpty()) {
+    // Check if permission is granted
+    if (ContextCompat.checkSelfPermission(this,
+    Manifest.permission.CALL_PHONE)
+    == PackageManager.PERMISSION_GRANTED
+    ) {
+    makePhoneCall(phoneNumber)
+    } else {
+    // Request permission if not granted
+    ActivityCompat.requestPermissions(
+    this,
+    arrayOf(Manifest.permission.CALL_PHONE),
+    CALL_PHONE_PERMISSION
+    )
+    }
+    } else {
+    Toast.makeText(this, "Please enter a valid phone number",
+    Toast.LENGTH_SHORT).show()
+    }
+    }
+    }
+    // Function to make a phone call
+    private fun makePhoneCall(phoneNumber: String) {
+    val intent = Intent(Intent.ACTION_CALL)
+    intent.data = Uri.parse("tel:$phoneNumber")
+    try {
+    startActivity(intent)
+    } catch (e: SecurityException) {
+    Toast.makeText(this, "Permission denied: Unable to make the call",
+    Toast.LENGTH_SHORT).show()
+    }
+    }
+    }
+8): Create the Application to play the Audio and Video clips.
+    MainActivity.kt
+    ---------------
+    package com.example.avplayer
+    import android.media.MediaPlayer
+    import android.net.Uri
+    import android.os.Bundle
+    import android.widget.Button
+    import android.widget.VideoView
+    import androidx.appcompat.app.AppCompatActivity
+    class MainActivity : AppCompatActivity() {
+    private lateinit var mediaPlayer: MediaPlayer
+    private lateinit var videoView: VideoView
+    override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_main)
+    val playAudioButton = findViewById<Button>(R.id.playAudioButton)
+    val stopAudioButton = findViewById<Button>(R.id.stopAudioButton)
+    videoView = findViewById(R.id.videoView)
+    val playVideoButton = findViewById<Button>(R.id.playVideoButton)
+    val stopVideoButton = findViewById<Button>(R.id.stopVideoButton)
+    // Initialize MediaPlayer for audio
+    mediaPlayer = MediaPlayer.create(this, R.raw.sample_audio) // Ensure audio
+    file is in res/raw
+    // Play Audio on button click
+    playAudioButton.setOnClickListener {
+    if (!mediaPlayer.isPlaying) {
+    mediaPlayer.start()
+    }
+    }
+    // Stop Audio on button click
+    stopAudioButton.setOnClickListener {
+    if (mediaPlayer.isPlaying) {
+    mediaPlayer.pause()
+    mediaPlayer.seekTo(0)
+    }
+    }
+    // Play Video on button click
+    playVideoButton.setOnClickListener {
+    val videoUri = Uri.parse("android.resource://" + packageName + "/" +
+    R.raw.sample_video) // Ensure video file is in res/raw
+    videoView.setVideoURI(videoUri)
+    videoView.setOnPreparedListener {
+    videoView.start()
+    }
+    }
+    // Stop Video on button click
+    stopVideoButton.setOnClickListener {
+    if (videoView.isPlaying) {
+    videoView.pause()
+    videoView.seekTo(0) // Reset video view for replay
+    }
+    }
+    }
+    override fun onDestroy() {
+    super.onDestroy()
+    // Release resources
+    if (this::mediaPlayer.isInitialized && mediaPlayer.isPlaying) {
+    mediaPlayer.stop()
+    mediaPlayer.release()
+    }
+    }
+    }
+9)Create Application by Using Building Menus and Storing Data.
+    menu_main.xml
+    ---------------
+    <?xml version="1.0" encoding="utf-8"?>
+    <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+    android:id="@+id/action_add"
+    android:title="Add Name" />
+    <item
+    android:id="@+id/action_view"
+    android:title="View Names" />
+    </menu>
+    activity_main.xml
+    -----------------
+    <?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+    <androidx.appcompat.widget.Toolbar
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+    <TextView
+    android:id="@+id/tvData"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Names will appear here"
+    android:textSize="16sp"
+    android:padding="10dp" />
+    </LinearLayout>
+    DatabaseHelper.kt
+    -----------------
+    package com.example.application16
+    import android.content.ContentValues
+    import android.content.Context
+    import android.database.sqlite.SQLiteDatabase
+    import android.database.sqlite.SQLiteOpenHelper
+    class DatabaseHelper(context: Context) : SQLiteOpenHelper(context,
+    DATABASE_NAME, null, DATABASE_VERSION) {
+    companion object {
+    const val DATABASE_NAME = "NamesDatabase"
+    const val DATABASE_VERSION = 1
+    const val TABLE_NAME = "Names"
+    const val COLUMN_ID = "id"
+    const val COLUMN_NAME = "name"
+    }
+    override fun onCreate(db: SQLiteDatabase?) {
+    val createTableQuery = "CREATE TABLE $TABLE_NAME
+    ($COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    $COLUMN_NAME TEXT)"
+    db?.execSQL(createTableQuery)
+    }
+    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion:
+    Int) {
+    db?.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
+    onCreate(db)
+    }
+    fun addName(name: String): Long {
+    if (name.isBlank()) {
+    throw IllegalArgumentException("Name cannot be empty or blank")
+    }
+    val db = writableDatabase
+    val values = ContentValues().apply {
+    put(COLUMN_NAME, name)
+    }
+    return db.insert(TABLE_NAME, null, values)
+    }
+    fun getAllNames(): List<String> {
+    val names = mutableListOf<String>()
+    val db = readableDatabase
+    val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME", null)
+    if (cursor.moveToFirst()) {
+    do {
+    val name =
+    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME))
+    names.add(name)
+    } while (cursor.moveToNext())
+    }
+    cursor.close()
+    return names
+    }
+    }
+    MainActivity.kt
+    -----------------
+    package com.example.application16
+    import android.os.Bundle
+    import android.util.Log
+    import android.view.Menu
+    import android.view.MenuItem
+    import android.widget.EditText
+    import android.widget.TextView
+    import android.widget.Toast
+    import androidx.appcompat.app.AlertDialog
+    import androidx.appcompat.app.AppCompatActivity
+    import androidx.appcompat.widget.Toolbar
+    import com.example.application16.DatabaseHelper
+    class MainActivity : AppCompatActivity() {
+    private lateinit var databaseHelper: DatabaseHelper
+    private lateinit var tvData: TextView
+    override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_main)
+    val toolbar: Toolbar = findViewById(R.id.toolbar)
+    setSupportActionBar(toolbar)
+    supportActionBar?.title = "Database App"
+    tvData = findViewById(R.id.tvData)
+    databaseHelper = DatabaseHelper(this)
+    }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    menuInflater.inflate(R.menu.menu_main, menu)
+    return true
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    when (item.itemId) {
+    R.id.action_add -> {
+    showAddNameDialog()
+    return true
+    }
+    R.id.action_view -> {
+    showNames()
+    return true
+    }
+    }
+    return super.onOptionsItemSelected(item)
+    }
+    private fun showAddNameDialog() {
+    val builder = AlertDialog.Builder(this)
+    builder.setTitle("Add Name")
+    val input = EditText(this)
+    input.hint = "Enter name"
+    builder.setView(input)
+    builder.setPositiveButton("Add") { _, _ ->
+    val name = input.text.toString()
+    try {
+    if (name.isNotEmpty()) {
+    val result = databaseHelper.addName(name)
+    if (result > 0) {
+    Toast.makeText(this, "Name added successfully!",
+    Toast.LENGTH_SHORT).show()
+    } else {
+    Toast.makeText(this, "Failed to add name.",
+    Toast.LENGTH_SHORT).show()
+    }
+    } else {
+    Toast.makeText(this, "Name cannot be empty!",
+    Toast.LENGTH_SHORT).show()
+    }
+    } catch (e: Exception) {
+    Log.e("MainActivity", "Error adding name: ${e.message}")
+    Toast.makeText(this, "An error occurred: ${e.message}",
+    Toast.LENGTH_SHORT).show()
+    }
+    }
+    builder.setNegativeButton("Cancel", null)
+    builder.show()
+    }
+    private fun showNames() {
+    val names = databaseHelper.getAllNames()
+    if (names.isEmpty()) {
+    tvData.text = "No names found!"
+    } else {
+    tvData.text = names.joinToString("\n")
+    }
+    }
+    }
+
+10)Design the Application for Menus and Action Bar
+    menu_main.xml
+    -------------
+    <?xml version="1.0" encoding="utf-8"?>
+    <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+    android:id="@+id/action_search"
+    android:title="Search"
+    android:showAsAction="ifRoom"/>
+    <item
+    android:id="@+id/action_settings"
+    android:title="Settings"
+    android:showAsAction="ifRoom"/>
+    <item
+    android:id="@+id/action_help"
+    android:title="Help"
+    android:showAsAction="never"/>
+    </menu>
+    activity_main.xml
+    ------------------
+    <?xml version="1.0" encoding="utf-8"?>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.appcompat.widget.Toolbar
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="?attr/colorPrimary"
+    android:title="My App"
+    android:titleTextColor="@android:color/white"
+    android:elevation="4dp"/>
+    <androidx.fragment.app.FragmentContainerView
+    android:id="@+id/fragment_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    MainActivity.kt
+    -----------------
+    package com.example.optionmenu
+    import android.os.Bundle
+    import android.view.Menu
+    import android.view.MenuItem
+    import androidx.appcompat.app.AppCompatActivity
+    import androidx.appcompat.widget.Toolbar
+    import com.google.android.material.snackbar.Snackbar
+    class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_main)
+    // Set up the Action Bar
+    val toolbar: Toolbar = findViewById(R.id.toolbar)
+    setSupportActionBar(toolbar)
+    }
+    // Inflate the menu; this adds items to the action bar if it is present
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    menuInflater.inflate(R.menu.menu_main, menu)
+    return true
+    }
+    // Handle item selection
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    return when (item.itemId) {
+    R.id.action_search -> {
+    // Handle search action
+    showMessage("Search selected")
+    true
+    }
+    R.id.action_settings -> {
+    // Handle settings action
+    showMessage("Settings selected")
+    true
+    }
+    R.id.action_help -> {
+    // Handle help action
+    showMessage("Help selected")
+    true
+    }
+    else -> super.onOptionsItemSelected(item)
+    }
+    }
+    private fun showMessage(message: String) {
+    Snackbar.make(findViewById(android.R.id.content), message,
+    Snackbar.LENGTH_SHORT).show()
+    }
+    }
+11)Program to Demonstrate Implicit and Explicit Intent.
+    //Implicit Intent
+    val btnOpenSecondActivity =
+    findViewById<Button>(R.id.btnOpenSecondActivity)
+    // Set onClick listener to open SecondActivity with explicit intent
+    btnOpenSecondActivity.setOnClickListener {
+    val intent = Intent(this, SecondActivity::class.java)
+    intent.putExtra("EXTRA_MESSAGE", "Hello from MainActivity")
+    startActivity(intent)
+    }
+    //Explicit Intent
+    // Receive message from MainActivity
+    val message = intent.getStringExtra("EXTRA_MESSAGE")
+    tvMessage.text = message ?: "No message received"
+    // Set onClick listener to open a web page using implicit intent
+    btnOpenWeb.setOnClickListener {
+    val webpage: Uri = Uri.parse("https://www.google.com")
+    val webIntent = Intent(Intent.ACTION_VIEW, webpage).apply {
+    addCategory(Intent.CATEGORY_BROWSABLE)
+    addCategory(Intent.CATEGORY_DEFAULT)
+    }
+    try {
+    startActivity(webIntent)
+    } catch (e: Exception) {
+    Toast.makeText(this, "No application available to open the webpage",
+    Toast.LENGTH_SHORT).show()
+    }
+    }
+    
+
+ 
